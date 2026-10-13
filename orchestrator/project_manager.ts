@@ -320,7 +320,9 @@ export class ProjectManager {
         if (created.exitCode !== 0) {
           // Never fail silently: every later `gh issue create --milestone`
           // rejects when the milestone is missing, leaving tasks invisible.
-          console.warn(`⚠️ GitHub milestone creation failed for "${m.title}": ${(created.stdout + created.stderr).slice(0, 300)}`);
+          console.warn(
+            `⚠️ GitHub milestone creation failed for "${m.title}": ${(created.stdout + created.stderr).slice(0, 300)}`
+          );
         }
         await Bun.sleep(800);
       } else if (hit.state === "closed" && !(isComplete?.(m.title) ?? false)) {
