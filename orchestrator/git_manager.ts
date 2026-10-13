@@ -706,6 +706,14 @@ export class GitManager {
     await this.run(["git", "reset", "-q", "--", ":(glob)**/__pycache__/**"]);
     await this.run(["git", "reset", "-q", "--", ":(glob)**/.venv/**"]);
     await this.run(["git", "reset", "-q", "--", ":(glob)**/vendor/**"]);
+    // Runtime-generated product files: `add -f` overrides the product
+    // .gitignore, so Laravel test runs would otherwise publish their cache,
+    // throwaway storage probes and a 200k-line laravel.log (once tripped the
+    // payload scanner). Regenerable, never reviewable.
+    await this.run(["git", "reset", "-q", "--", ":(glob)**/bootstrap/cache/**"]);
+    await this.run(["git", "reset", "-q", "--", ":(glob)**/storage/logs/**"]);
+    await this.run(["git", "reset", "-q", "--", ":(glob)**/storage/framework/**"]);
+    await this.run(["git", "reset", "-q", "--", ":(glob)**/.phpunit.result.cache"]);
     const staged = await this.run(["git", "diff", "--cached", "--name-only"]);
     const files = staged.stdout
       .split("\n")
