@@ -714,6 +714,12 @@ export class GitManager {
     await this.run(["git", "reset", "-q", "--", ":(glob)**/storage/logs/**"]);
     await this.run(["git", "reset", "-q", "--", ":(glob)**/storage/framework/**"]);
     await this.run(["git", "reset", "-q", "--", ":(glob)**/.phpunit.result.cache"]);
+    // Framework build output (Nuxt/Next): regenerable, never reviewable —
+    // a backend task that touched the frontend tree once published 30 files
+    // of .nuxt/ generated types.
+    await this.run(["git", "reset", "-q", "--", ":(glob)**/.nuxt/**"]);
+    await this.run(["git", "reset", "-q", "--", ":(glob)**/.next/**"]);
+    await this.run(["git", "reset", "-q", "--", ":(glob)**/.output/**"]);
     const staged = await this.run(["git", "diff", "--cached", "--name-only"]);
     const files = staged.stdout
       .split("\n")
