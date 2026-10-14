@@ -371,7 +371,10 @@ export interface FailureDiagnosis {
 function parseListedOutOfScope(text: string): { files: string[]; truncated: boolean } {
   const m = text.match(/out-of-scope files modified \(([^)]*)\)/i);
   if (!m) return { files: [], truncated: false };
-  const raw = m[1].split(",").map((s) => s.trim()).filter(Boolean);
+  const raw = m[1]
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
   const truncated = raw.some((s) => /^\+\d+\s+more$/i.test(s));
   const files = raw.filter((s) => !/^\+\d+\s+more$/i.test(s)).map((s) => s.replace(/^`|`$/g, ""));
   return { files, truncated };
@@ -393,10 +396,7 @@ function hasCodeLevelConcat(code: string): boolean {
  * list from the gate) beats message parsing. `progress-conflict` is a
  * merge-time condition and is never emitted here — listed for completeness.
  */
-export function classifyGateFailure(
-  failures: string[],
-  opts?: { diff?: string; outOfScope?: string[] }
-): FailureDiagnosis[] {
+export function classifyGateFailure(failures: string[], opts?: { diff?: string; outOfScope?: string[] }): FailureDiagnosis[] {
   const out: FailureDiagnosis[] = [];
   const text = failures.join("\n");
   if (/empty diff/i.test(text)) {
@@ -458,9 +458,7 @@ export function classifyGateFailure(
             "Relocate the listed tests to a QA-owned task or widen the task's targetFiles; NEVER delete coverage to satisfy the gate.",
         });
       } else if (kinds.size === 1 && kinds.has("junk")) {
-        const buildOnly = oos.every((f) =>
-          /(^|\/)(dist|build|out|coverage|storybook-static)\//.test(f.replace(/\\/g, "/"))
-        );
+        const buildOnly = oos.every((f) => /(^|\/)(dist|build|out|coverage|storybook-static)\//.test(f.replace(/\\/g, "/")));
         out.push({
           kind: buildOnly ? "build-output" : "vendor-junk",
           files: [...oos],

@@ -475,9 +475,7 @@ export class GitManager {
       // branches ALWAYS conflict on it. Keep the integration-branch copy and
       // skip the AI resolver (which adds nothing for a scratch file). Any
       // other conflicted file routes to the resolver below.
-      const conflicted = (
-        await this.run(["git", "diff", "--name-only", "--diff-filter=U"])
-      ).stdout
+      const conflicted = (await this.run(["git", "diff", "--name-only", "--diff-filter=U"])).stdout
         .split("\n")
         .map((f) => f.trim().replace(/\\/g, "/"))
         .filter(Boolean);

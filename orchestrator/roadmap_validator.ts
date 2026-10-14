@@ -160,7 +160,14 @@ export function validateRoadmap(raw: {
         `[${t.id}] description/deliverables require test files but targetFiles exclude them; widen targetFiles to cover the tests or move them to a QA-owned task.`
       );
     }
-    if (!historical && typeof t.verificationCommand === "string" && t.verificationCommand.trim() && scoped && t.role !== "qa" && t.role !== "launch") {
+    if (
+      !historical &&
+      typeof t.verificationCommand === "string" &&
+      t.verificationCommand.trim() &&
+      scoped &&
+      t.role !== "qa" &&
+      t.role !== "launch"
+    ) {
       const named = t.verificationCommand
         .split(/\s+/)
         .map((s) => s.replace(/^["']|["']$/g, ""))
@@ -168,9 +175,7 @@ export function validateRoadmap(raw: {
       const uncovered = named.filter(
         (n) =>
           !(t.targetFiles || []).some(
-            (tf) =>
-              tf.toLowerCase().includes("test") ||
-              n.toLowerCase().startsWith(tf.toLowerCase().replace(/\/(\*\*?)?$/, ""))
+            (tf) => tf.toLowerCase().includes("test") || n.toLowerCase().startsWith(tf.toLowerCase().replace(/\/(\*\*?)?$/, ""))
           )
       );
       if (named.length > 0 && uncovered.length > 0) {
@@ -181,9 +186,7 @@ export function validateRoadmap(raw: {
     }
     if (!historical && scoped) {
       const normTargets = (t.targetFiles || []).map((f) => f.replace(/\\/g, "/"));
-      const touchesDataLayer = normTargets.some((f) =>
-        /(^|\/)(api|db|database|models?|services?|schema|migrations?)\//i.test(f)
-      );
+      const touchesDataLayer = normTargets.some((f) => /(^|\/)(api|db|database|models?|services?|schema|migrations?)\//i.test(f));
       const ownsContracts = normTargets.some((f) => f.includes("workspace/CONTRACTS.md"));
       if (touchesDataLayer && !ownsContracts) {
         errors.push(
