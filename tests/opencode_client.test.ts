@@ -169,21 +169,26 @@ describe("OpenCode Client Module", () => {
     });
 
     it("filterAttachableFiles keeps small files, skips >10MiB", async () => {
-      const dir = `C:/Users/Taiizor/AppData/Local/Temp/opencode/attach-test`;
+      const { tmpdir } = await import("node:os");
+      const { join } = await import("node:path");
+      const dir = join(tmpdir(), `opencode-attach-test-${process.pid}-${Date.now()}`);
       await Bun.$`mkdir -p ${dir}`.quiet();
-      await Bun.write(`${dir}/small.txt`, "hello");
+      await Bun.write(join(dir, "small.txt"), "hello");
       const big = Buffer.alloc(11 * 1024 * 1024, 0);
-      await Bun.write(`${dir}/big.bin`, big);
-      const { kept, skipped } = await OpenCodeClient.filterAttachableFiles([`${dir}/small.txt`, `${dir}/big.bin`]);
-      expect(kept).toEqual([`${dir}/small.txt`]);
+      await Bun.write(join(dir, "big.bin"), big);
+      const { kept, skipped } = await OpenCodeClient.filterAttachableFiles([join(dir, "small.txt"), join(dir, "big.bin")]);
+      expect(kept).toEqual([join(dir, "small.txt")]);
       expect(skipped.length).toBe(1);
-      expect(skipped[0].path).toBe(`${dir}/big.bin`);
+      expect(skipped[0].path).toBe(join(dir, "big.bin"));
       await Bun.$`rm -rf ${dir}`.quiet();
     });
 
     it("filterAttachableFiles keeps missing files (CLI reports those)", async () => {
-      const { kept, skipped } = await OpenCodeClient.filterAttachableFiles(["C:/nope/missing.txt"]);
-      expect(kept).toEqual(["C:/nope/missing.txt"]);
+      const { tmpdir } = await import("node:os");
+      const { join } = await import("node:path");
+      const missing = join(tmpdir(), `opencode-nope-${Date.now()}`, "missing.txt");
+      const { kept, skipped } = await OpenCodeClient.filterAttachableFiles([missing]);
+      expect(kept).toEqual([missing]);
       expect(skipped).toEqual([]);
     });
   });
