@@ -439,7 +439,11 @@ async function main() {
   });
   console.log("OpenCode Output Summary:", res.stdout ? res.stdout.slice(-1000) : "No stdout");
   if (res.exitCode !== 0) {
-    console.error("OpenCode process exited with error:", res.stderr, res.errorDetail ? `Reason: ${res.errorDetail.slice(0, 300)}` : "");
+    console.error(
+      "OpenCode process exited with error:",
+      res.stderr,
+      res.errorDetail ? `Reason: ${res.errorDetail.slice(0, 300)}` : ""
+    );
     if (res.usage && res.usage.steps > 0) {
       console.error(`💰 Burned this chain: cost=${res.usage.cost} tokens=${res.usage.tokens} steps=${res.usage.steps}.`);
     }

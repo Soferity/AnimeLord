@@ -135,7 +135,12 @@ export class OpenCodeClient {
     if (!trimmed.startsWith("{")) return undefined;
     try {
       const event = JSON.parse(trimmed);
-      if (!String(event?.type || "").toLowerCase().includes("tool")) return undefined;
+      if (
+        !String(event?.type || "")
+          .toLowerCase()
+          .includes("tool")
+      )
+        return undefined;
       const part = (event as any)?.part || {};
       const name = part.name || part.tool || part.id || part.title;
       return typeof name === "string" && name ? String(name).slice(0, 80) : "tool";
