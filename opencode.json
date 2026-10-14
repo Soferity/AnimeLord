@@ -6,7 +6,7 @@
   "provider": {
     "opencode": {
       "options": {
-        "baseURL": "https://opencode.ai/zen/v2"
+        "baseURL": "https://opencode.ai/zen/v1"
       }
     }
   }
