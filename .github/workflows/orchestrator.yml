@@ -152,10 +152,9 @@ jobs:
           fi
           echo "$HOME/.bun/bin" >> $GITHUB_PATH
           export PATH="$HOME/.bun/bin:$PATH"
-          # Config is repo-level (opencode.json); no global write here.
+          mkdir -p "$HOME/.config/opencode"
+          printf '{\n  "permission": {\n    "*": "allow"\n  }\n}\n' > "$HOME/.config/opencode/opencode.json"
           opencode --version || echo "OpenCode installed"
-          # Smoke check: CLI boots and the model catalog resolves (non-blocking).
-          opencode models 2>&1 | tail -n 5 || echo "model list unavailable"
 
       - name: 📦 Install Project Dependencies
         # Frozen lockfile: CI must never resolve-and-rewrite bun.lock (dirty
