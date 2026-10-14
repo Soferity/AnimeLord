@@ -469,7 +469,13 @@ async function main() {
   }
   // Ground-truth spend snapshot for cost tracking (best-effort).
   try {
-    const stats = await GitManager.run(["opencode", "stats", "--json", "--cost", "--project", "."], ".", undefined, undefined, 30_000);
+    const stats = await GitManager.run(
+      ["opencode", "stats", "--json", "--cost", "--project", "."],
+      ".",
+      undefined,
+      undefined,
+      30_000
+    );
     if (stats.exitCode === 0 && stats.stdout.trim()) {
       console.log(`💰 Project spend snapshot: ${stats.stdout.trim().slice(0, 500)}`);
     }

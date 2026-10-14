@@ -557,11 +557,7 @@ export class OpenCodeClient {
     if (lsess) fallbackCmd.push("--session", lsess);
     if (cliExtra.agent) fallbackCmd.push("--agent", cliExtra.agent);
     if (cliExtra.title) fallbackCmd.push("--title", cliExtra.title);
-    const defaultRes = await attempt(
-      fallbackCmd,
-      lsess ? CONTINUATION_PROMPT : prompt,
-      "default effort"
-    );
+    const defaultRes = await attempt(fallbackCmd, lsess ? CONTINUATION_PROMPT : prompt, "default effort");
     const parsedDefault = OpenCodeClient.extractText(defaultRes.stdout);
     if (defaultRes.exitCode === 130) {
       console.warn("🛑 [OpenCode] Last resort exited 130 (external cancel); stopping.");
