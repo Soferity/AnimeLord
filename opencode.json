@@ -1,10 +1,13 @@
 {
-  "tools": {
-    "bash": true,
-    "read": true
-  },
+  "$schema": "https://opencode.ai/config.json",
   "permission": {
-    "bash": "ask",
-    "read": "allow"
+    "*": "allow"
+  },
+  "provider": {
+    "opencode": {
+      "options": {
+        "baseURL": "https://opencode.ai/zen/v1"
+      }
+    }
   }
 }
