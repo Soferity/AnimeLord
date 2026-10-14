@@ -62,6 +62,8 @@ jobs:
           export PATH="$HOME/.bun/bin:$PATH"
           # Config is repo-level (opencode.json); no global write here.
           opencode --version || echo "OpenCode installed"
+          # Smoke check: CLI boots and the model catalog resolves (non-blocking).
+          opencode models 2>&1 | tail -n 5 || echo "model list unavailable"
 
       - name: 📦 Install Project Dependencies
         # Frozen lockfile (see orchestrator.yml): never rewrite bun.lock on CI.
