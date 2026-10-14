@@ -492,8 +492,7 @@ export class OpenCodeClient {
       const label = OpenCodeClient.displaySpec(spec);
       const sess = useContinuation || useFork ? lastSessionId : undefined;
       const fork = useFork && !!sess;
-      if (sess && fork)
-        console.log(`🔁 [OpenCode] Fork-continuing session ${sess} with ${label} (original may still be busy).`);
+      if (sess && fork) console.log(`🔁 [OpenCode] Fork-continuing session ${sess} with ${label} (original may still be busy).`);
       else if (sess) console.log(`🔁 [OpenCode] Continuing session ${sess} with ${label} instead of restarting.`);
       else console.log(`🤖 [OpenCode] Attempting execution with model (${i + 1}/${candidateModels.length}): ${label}...`);
 
