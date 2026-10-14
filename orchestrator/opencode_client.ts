@@ -449,7 +449,7 @@ export class OpenCodeClient {
 
     // Session-aware fallback: when an attempt fails fast (NOT a timeout —
     // the server side may still be busy then), the next model continues the
-    // same session instead of redoing 45 minutes of reasoning from scratch.
+    // same session instead of redoing 60 minutes of reasoning from scratch.
     // The session id rides on every JSON event line; cold restarts keep the
     // full prompt because the new session has no history.
     const CONTINUATION_PROMPT =
