@@ -94,10 +94,7 @@ function isBotLogin(login: string): boolean {
  * disposable ack template and no high-value template. Anything unparsable
  * (bad date, unknown shape) is immune — fail-closed.
  */
-export function selectPrunableComments(
-  comments: PrunableComment[],
-  opts?: PruneCandidatesOptions
-): PrunableComment[] {
+export function selectPrunableComments(comments: PrunableComment[], opts?: PruneCandidatesOptions): PrunableComment[] {
   const now = opts?.now ?? Date.now();
   const retentionMs = (opts?.retentionHours ?? CONFIG.CHATOPS_PRUNE_RETENTION_HOURS) * 3600 * 1000;
   const keepRecent = opts?.keepRecentCount ?? CONFIG.CHATOPS_PRUNE_KEEP_RECENT;
